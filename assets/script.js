@@ -3,87 +3,86 @@ var myDay = [
         id: "0",
         hour: "9:00",
         time: "09",
-        meridiem: "am",
+        suffix: "am",
         reminder: ""
     },
     {
         id: "1",
         hour: "10:00",
         time: "10",
-        meridiem: "am",
+        suffix: "am",
         reminder: ""
     },
     {
         id: "2",
         hour: "11:00",
         time: "11",
-        meridiem: "am",
+        suffix: "am",
         reminder: ""
     },
     {
         id: "3",
         hour: "12:00",
         time: "12",
-        meridiem: "pm",
+        suffix: "pm",
         reminder: ""
     },
     {
         id: "4",
         hour: "1:00",
         time: "13",
-        meridiem: "pm",
+        suffix: "pm",
         reminder: ""
     },
     {
         id: "5",
         hour: "2:00",
         time: "14",
-        meridiem: "pm",
+        suffix: "pm",
         reminder: ""
     },
     {
         id: "6",
         hour: "3:00",
         time: "15",
-        meridiem: "pm",
+        suffix: "pm",
         reminder: ""
     },
     {
         id: "7",
         hour: "4:00",
         time: "16",
-        meridiem: "pm",
+        suffix: "pm",
         reminder: ""
     },
     {
         id: "8",
         hour: "5:00",
         time: "17",
-        meridiem: "pm",
+        suffix: "pm",
         reminder: ""
     },
     
 ]
 
-// gets data for the header date
+//Displays the current date 
 function getHeaderDate() {
     var currentHeaderDate = moment().format('dddd, MMMM Do');
     $("#currentDay").text(currentHeaderDate);
 }
 
-// saves data to localStorage
+// Saves the myDay object to local storage
 function saveReminders() {
     localStorage.setItem("myDay", JSON.stringify(myDay));
 }
 
-// sets any data in localStorage to the view
 function displayReminders() {
     myDay.forEach(function (_thisHour) {
         $(`#${_thisHour.id}`).val(_thisHour.reminder);
     })
 }
 
-// sets any existing localStorage data to the view if it exists
+//Retrieves the items stored in local storage
 function init() {
     var storedDay = JSON.parse(localStorage.getItem("myDay"));
 
@@ -95,10 +94,9 @@ function init() {
     displayReminders();
 }
 
-// loads header date
 getHeaderDate();
 
-// creates the visuals for the scheduler body
+// Creates the time blocks and formats color based on time 
 myDay.forEach(function(thisHour) {
     // creates timeblocks row
     var hourRow = $("<form>").attr({
@@ -108,7 +106,7 @@ myDay.forEach(function(thisHour) {
 
     // creates time field
     var hourField = $("<div>")
-        .text(`${thisHour.hour}${thisHour.meridiem}`)
+        .text(`${thisHour.hour}${thisHour.suffix}`)
         .attr({
             "class": "col-md-2 hour"
     });
@@ -121,6 +119,7 @@ myDay.forEach(function(thisHour) {
     var planData = $("<textarea>");
     hourPlan.append(planData);
     planData.attr("id", thisHour.id);
+   
     if (thisHour.time < moment().format("HH")) {
         planData.attr ({
             "class": "past", 
@@ -135,7 +134,7 @@ myDay.forEach(function(thisHour) {
         })
     }
 
-    // creates save button
+    // creates save button/ save button icons
     var saveButton = $("<i class='far fa-save fa-lg'></i>")
     var savePlan = $("<button>")
         .attr({
@@ -145,16 +144,19 @@ myDay.forEach(function(thisHour) {
     hourRow.append(hourField, hourPlan, savePlan);
 })
 
-// loads any existing localstorage data after components created
+//Once the codeblocks are created, loads any existing stored data
+
 init();
 
 
-// saves data to be used in localStorage
+//Save button click event 
+
 $(".saveBtn").on("click", function(event) {
     event.preventDefault();
-    var saveIndex = $(this).siblings(".description").children(".future").attr("id");
-    // myDay[saveIndex].reminder = $(this).siblings(".description").children(".future").val();
+    let saveIndex =  $(this).siblings(".description").children(".past").attr("id");
     console.log(saveIndex);
+    myDay[saveIndex].reminder = $(this).siblings(".description").children(".past").val();
+    console.log(myDay);
     saveReminders();
     displayReminders();
 })
