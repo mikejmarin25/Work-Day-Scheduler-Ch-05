@@ -29,7 +29,7 @@ THEN the text for that event is saved in local storage
 WHEN I refresh the page
 THEN the saved events persist
 
-GitHub Repository Link:
+GitHub Repository Link: https://github.com/mikejmarin25/Work-Day-Scheduler-Ch-05/edit/main/README.md
 
-Live Application URL:
+Live Application URL: https://mikejmarin25.github.io/Work-Day-Scheduler-Ch-05/
 
